@@ -7,6 +7,7 @@
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
+    return val;
   };
 
   /**
@@ -37,7 +38,14 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-  };
+  //   return n === undefined ? array[array.length-1] : array.slice(array.length - n);
+    if (n>array.length){
+      return array
+    }else if (n === undefined){
+      return array[array.length-1]
+    }else {return array.slice(array.length-n)
+}
+   };
 
   // Call iterator(value, key, collection) for each element of collection.
   // Accepts both arrays and objects.
@@ -45,7 +53,15 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
-  };
+    if(Array.isArray(collection)){
+    for (var i = 0 ; i < collection.length;i++){
+      iterator(collection[i],i,collection)
+    }
+}else{     for(var k in collection){
+  iterator(collection[k],k,collection)
+}
+}
+};
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
@@ -59,6 +75,7 @@
       if (item === target && result === -1) {
         result = index;
       }
+    
     });
 
     return result;
@@ -66,12 +83,30 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var acc = []
+    _.each(collection,function(item,index){
+      if(test(item,index)){
+        acc.push(item)
+      }
+    })
+  return acc
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
+  var x = []
+  var result = _.filter(collection,test)
+for(var i = 0 ; i < result.length; i++){
+  for(var j = 0; j< collection.length;j++){
+    if(result[i]===collection[j]){
+      collection.splice(j-1,1)
+    }
+  }
+}
+
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    return collection
   };
 
   // Produce a duplicate-free version of the array.
